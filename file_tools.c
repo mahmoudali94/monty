@@ -1,1 +1,160 @@
-{"payload":{"allShortcutsEnabled":false,"fileTree":{"":{"items":[{"name":"bf","path":"bf","contentType":"directory"},{"name":"errors.c","path":"errors.c","contentType":"file"},{"name":"file_tools.c","path":"file_tools.c","contentType":"file"},{"name":"main.c","path":"main.c","contentType":"file"},{"name":"monty.h","path":"monty.h","contentType":"file"},{"name":"stack_func1.c","path":"stack_func1.c","contentType":"file"},{"name":"stack_func2.c","path":"stack_func2.c","contentType":"file"},{"name":"stack_op.c","path":"stack_op.c","contentType":"file"},{"name":"stack_strings.c","path":"stack_strings.c","contentType":"file"}],"totalCount":9}},"fileTreeProcessingTime":1.932177,"foldersToFetch":[],"reducedMotionEnabled":null,"repo":{"id":682627323,"defaultBranch":"main","name":"monty","ownerLogin":"sadatmisr","currentUserCanPush":false,"isFork":false,"isEmpty":false,"createdAt":"2023-08-24T15:17:33.000Z","ownerAvatar":"https://avatars.githubusercontent.com/u/130691074?v=4","public":true,"private":false,"isOrgOwned":false},"symbolsExpanded":false,"treeExpanded":true,"refInfo":{"name":"main","listCacheKey":"v0:1692890361.0","canEdit":false,"refType":"branch","currentOid":"b5394114697cb430a376e809eb1589246a6ace63"},"path":"file_tools.c","currentUser":null,"blob":{"rawLines":["#include \"monty.h\"","","/**"," * open_file - opens a file"," * @file_name: the file namepath"," * Return: void"," */","","void open_file(char *file_name)","{","\tFILE *fd = fopen(file_name, \"r\");","","\tif (file_name == NULL || fd == NULL)","\t\terr(2, file_name);","","\tread_file(fd);","\tfclose(fd);","}","","","/**"," * read_file - reads a file"," * @fd: pointer to file descriptor"," * Return: void"," */","","void read_file(FILE *fd)","{","\tint line_number, format = 0;","\tchar *buffer = NULL;","\tsize_t len = 0;","","\tfor (line_number = 1; getline(&buffer, &len, fd) != -1; line_number++)","\t{","\t\tformat = parse_line(buffer, line_number, format);","\t}","\tfree(buffer);","}","","","/**"," * parse_line - Separates each line into tokens to determine"," * which function to call"," * @buffer: line from the file"," * @line_number: line number"," * @format:  storage format. If 0 Nodes will be entered as a stack."," * if 1 nodes will be entered as a queue."," * Return: Returns 0 if the opcode is stack. 1 if queue."," */","","int parse_line(char *buffer, int line_number, int format)","{","\tchar *opcode, *value;","\tconst char *delim = \"\\n \";","","\tif (buffer == NULL)","\t\terr(4);","","\topcode = strtok(buffer, delim);","\tif (opcode == NULL)","\t\treturn (format);","\tvalue = strtok(NULL, delim);","","\tif (strcmp(opcode, \"stack\") == 0)","\t\treturn (0);","\tif (strcmp(opcode, \"queue\") == 0)","\t\treturn (1);","","\tfind_func(opcode, value, line_number, format);","\treturn (format);","}","","/**"," * find_func - find the appropriate function for the opcode"," * @opcode: opcode"," * @value: argument of opcode"," * @format:  storage format. If 0 Nodes will be entered as a stack."," * @ln: line number"," * if 1 nodes will be entered as a queue."," * Return: void"," */","void find_func(char *opcode, char *value, int ln, int format)","{","\tint i;","\tint flag;","","\tinstruction_t func_list[] = {","\t\t{\"push\", add_to_stack},","\t\t{\"pall\", print_stack},","\t\t{\"pint\", print_top},","\t\t{\"pop\", pop_top},","\t\t{\"nop\", nop},","\t\t{\"swap\", swap_nodes},","\t\t{\"add\", add_nodes},","\t\t{\"sub\", sub_nodes},","\t\t{\"div\", div_nodes},","\t\t{\"mul\", mul_nodes},","\t\t{\"mod\", mod_nodes},","\t\t{\"pchar\", print_char},","\t\t{\"pstr\", print_str},","\t\t{\"rotl\", rotl},","\t\t{\"rotr\", rotr},","\t\t{NULL, NULL}","\t};","","\tif (opcode[0] == '#')","\t\treturn;","","\tfor (flag = 1, i = 0; func_list[i].opcode != NULL; i++)","\t{","\t\tif (strcmp(opcode, func_list[i].opcode) == 0)","\t\t{","\t\t\tcall_fun(func_list[i].f, opcode, value, ln, format);","\t\t\tflag = 0;","\t\t}","\t}","\tif (flag == 1)","\t\terr(3, ln, opcode);","}","","","/**"," * call_fun - Calls the required function."," * @func: Pointer to the function that is about to be called."," * @op: string representing the opcode."," * @val: string representing a numeric value."," * @ln: line numeber for the instruction."," * @format: Format specifier. If 0 Nodes will be entered as a stack."," * if 1 nodes will be entered as a queue."," */","void call_fun(op_func func, char *op, char *val, int ln, int format)","{","\tstack_t *node;","\tint flag;","\tint i;","","\tflag = 1;","\tif (strcmp(op, \"push\") == 0)","\t{","\t\tif (val != NULL && val[0] == '-')","\t\t{","\t\t\tval = val + 1;","\t\t\tflag = -1;","\t\t}","\t\tif (val == NULL)","\t\t\terr(5, ln);","\t\tfor (i = 0; val[i] != '\\0'; i++)","\t\t{","\t\t\tif (isdigit(val[i]) == 0)","\t\t\t\terr(5, ln);","\t\t}","\t\tnode = create_node(atoi(val) * flag);","\t\tif (format == 0)","\t\t\tfunc(&node, ln);","\t\tif (format == 1)","\t\t\tadd_to_queue(&node, ln);","\t}","\telse","\t\tfunc(&head, ln);","}"],"stylingDirectives":[[{"start":0,"end":8,"cssClass":"pl-k"},{"start":9,"end":18,"cssClass":"pl-s"}],[],[{"start":0,"end":3,"cssClass":"pl-c"}],[{"start":0,"end":27,"cssClass":"pl-c"}],[{"start":0,"end":32,"cssClass":"pl-c"}],[{"start":0,"end":15,"cssClass":"pl-c"}],[{"start":0,"end":3,"cssClass":"pl-c"}],[],[{"start":0,"end":4,"cssClass":"pl-smi"},{"start":5,"end":14,"cssClass":"pl-en"},{"start":15,"end":19,"cssClass":"pl-smi"},{"start":20,"end":21,"cssClass":"pl-c1"},{"start":21,"end":30,"cssClass":"pl-s1"}],[],[{"start":1,"end":5,"cssClass":"pl-smi"},{"start":6,"end":7,"cssClass":"pl-c1"},{"start":7,"end":9,"cssClass":"pl-s1"},{"start":10,"end":11,"cssClass":"pl-c1"},{"start":12,"end":17,"cssClass":"pl-en"},{"start":18,"end":27,"cssClass":"pl-s1"},{"start":29,"end":32,"cssClass":"pl-s"}],[],[{"start":1,"end":3,"cssClass":"pl-k"},{"start":5,"end":14,"cssClass":"pl-s1"},{"start":15,"end":17,"cssClass":"pl-c1"},{"start":18,"end":22,"cssClass":"pl-c1"},{"start":23,"end":25,"cssClass":"pl-c1"},{"start":26,"end":28,"cssClass":"pl-s1"},{"start":29,"end":31,"cssClass":"pl-c1"},{"start":32,"end":36,"cssClass":"pl-c1"}],[{"start":2,"end":5,"cssClass":"pl-en"},{"start":6,"end":7,"cssClass":"pl-c1"},{"start":9,"end":18,"cssClass":"pl-s1"}],[],[{"start":1,"end":10,"cssClass":"pl-en"},{"start":11,"end":13,"cssClass":"pl-s1"}],[{"start":1,"end":7,"cssClass":"pl-en"},{"start":8,"end":10,"cssClass":"pl-s1"}],[],[],[],[{"start":0,"end":3,"cssClass":"pl-c"}],[{"start":0,"end":27,"cssClass":"pl-c"}],[{"start":0,"end":34,"cssClass":"pl-c"}],[{"start":0,"end":15,"cssClass":"pl-c"}],[{"start":0,"end":3,"cssClass":"pl-c"}],[],[{"start":0,"end":4,"cssClass":"pl-smi"},{"start":5,"end":14,"cssClass":"pl-en"},{"start":15,"end":19,"cssClass":"pl-smi"},{"start":20,"end":21,"cssClass":"pl-c1"},{"start":21,"end":23,"cssClass":"pl-s1"}],[],[{"start":1,"end":4,"cssClass":"pl-smi"},{"start":5,"end":16,"cssClass":"pl-s1"},{"start":18,"end":24,"cssClass":"pl-s1"},{"start":25,"end":26,"cssClass":"pl-c1"},{"start":27,"end":28,"cssClass":"pl-c1"}],[{"start":1,"end":5,"cssClass":"pl-smi"},{"start":6,"end":7,"cssClass":"pl-c1"},{"start":7,"end":13,"cssClass":"pl-s1"},{"start":14,"end":15,"cssClass":"pl-c1"},{"start":16,"end":20,"cssClass":"pl-c1"}],[{"start":1,"end":7,"cssClass":"pl-smi"},{"start":8,"end":11,"cssClass":"pl-s1"},{"start":12,"end":13,"cssClass":"pl-c1"},{"start":14,"end":15,"cssClass":"pl-c1"}],[],[{"start":1,"end":4,"cssClass":"pl-k"},{"start":6,"end":17,"cssClass":"pl-s1"},{"start":18,"end":19,"cssClass":"pl-c1"},{"start":20,"end":21,"cssClass":"pl-c1"},{"start":23,"end":30,"cssClass":"pl-en"},{"start":31,"end":32,"cssClass":"pl-c1"},{"start":32,"end":38,"cssClass":"pl-s1"},{"start":40,"end":41,"cssClass":"pl-c1"},{"start":41,"end":44,"cssClass":"pl-s1"},{"start":46,"end":48,"cssClass":"pl-s1"},{"start":50,"end":52,"cssClass":"pl-c1"},{"start":53,"end":55,"cssClass":"pl-c1"},{"start":57,"end":68,"cssClass":"pl-s1"},{"start":68,"end":70,"cssClass":"pl-c1"}],[],[{"start":2,"end":8,"cssClass":"pl-s1"},{"start":9,"end":10,"cssClass":"pl-c1"},{"start":11,"end":21,"cssClass":"pl-en"},{"start":22,"end":28,"cssClass":"pl-s1"},{"start":30,"end":41,"cssClass":"pl-s1"},{"start":43,"end":49,"cssClass":"pl-s1"}],[],[{"start":1,"end":5,"cssClass":"pl-en"},{"start":6,"end":12,"cssClass":"pl-s1"}],[],[],[],[{"start":0,"end":3,"cssClass":"pl-c"}],[{"start":0,"end":60,"cssClass":"pl-c"}],[{"start":0,"end":25,"cssClass":"pl-c"}],[{"start":0,"end":30,"cssClass":"pl-c"}],[{"start":0,"end":28,"cssClass":"pl-c"}],[{"start":0,"end":67,"cssClass":"pl-c"}],[{"start":0,"end":41,"cssClass":"pl-c"}],[{"start":0,"end":56,"cssClass":"pl-c"}],[{"start":0,"end":3,"cssClass":"pl-c"}],[],[{"start":0,"end":3,"cssClass":"pl-smi"},{"start":4,"end":14,"cssClass":"pl-en"},{"start":15,"end":19,"cssClass":"pl-smi"},{"start":20,"end":21,"cssClass":"pl-c1"},{"start":21,"end":27,"cssClass":"pl-s1"},{"start":29,"end":32,"cssClass":"pl-smi"},{"start":33,"end":44,"cssClass":"pl-s1"},{"start":46,"end":49,"cssClass":"pl-smi"},{"start":50,"end":56,"cssClass":"pl-s1"}],[],[{"start":1,"end":5,"cssClass":"pl-smi"},{"start":6,"end":7,"cssClass":"pl-c1"},{"start":7,"end":13,"cssClass":"pl-s1"},{"start":15,"end":16,"cssClass":"pl-c1"},{"start":16,"end":21,"cssClass":"pl-s1"}],[{"start":1,"end":6,"cssClass":"pl-k"},{"start":7,"end":11,"cssClass":"pl-smi"},{"start":12,"end":13,"cssClass":"pl-c1"},{"start":13,"end":18,"cssClass":"pl-s1"},{"start":19,"end":20,"cssClass":"pl-c1"},{"start":21,"end":26,"cssClass":"pl-s"}],[],[{"start":1,"end":3,"cssClass":"pl-k"},{"start":5,"end":11,"cssClass":"pl-s1"},{"start":12,"end":14,"cssClass":"pl-c1"},{"start":15,"end":19,"cssClass":"pl-c1"}],[{"start":2,"end":5,"cssClass":"pl-en"},{"start":6,"end":7,"cssClass":"pl-c1"}],[],[{"start":1,"end":7,"cssClass":"pl-s1"},{"start":8,"end":9,"cssClass":"pl-c1"},{"start":10,"end":16,"cssClass":"pl-en"},{"start":17,"end":23,"cssClass":"pl-s1"},{"start":25,"end":30,"cssClass":"pl-s1"}],[{"start":1,"end":3,"cssClass":"pl-k"},{"start":5,"end":11,"cssClass":"pl-s1"},{"start":12,"end":14,"cssClass":"pl-c1"},{"start":15,"end":19,"cssClass":"pl-c1"}],[{"start":2,"end":8,"cssClass":"pl-k"},{"start":10,"end":16,"cssClass":"pl-s1"}],[{"start":1,"end":6,"cssClass":"pl-s1"},{"start":7,"end":8,"cssClass":"pl-c1"},{"start":9,"end":15,"cssClass":"pl-en"},{"start":16,"end":20,"cssClass":"pl-c1"},{"start":22,"end":27,"cssClass":"pl-s1"}],[],[{"start":1,"end":3,"cssClass":"pl-k"},{"start":5,"end":11,"cssClass":"pl-en"},{"start":12,"end":18,"cssClass":"pl-s1"},{"start":20,"end":27,"cssClass":"pl-s"},{"start":29,"end":31,"cssClass":"pl-c1"},{"start":32,"end":33,"cssClass":"pl-c1"}],[{"start":2,"end":8,"cssClass":"pl-k"},{"start":10,"end":11,"cssClass":"pl-c1"}],[{"start":1,"end":3,"cssClass":"pl-k"},{"start":5,"end":11,"cssClass":"pl-en"},{"start":12,"end":18,"cssClass":"pl-s1"},{"start":20,"end":27,"cssClass":"pl-s"},{"start":29,"end":31,"cssClass":"pl-c1"},{"start":32,"end":33,"cssClass":"pl-c1"}],[{"start":2,"end":8,"cssClass":"pl-k"},{"start":10,"end":11,"cssClass":"pl-c1"}],[],[{"start":1,"end":10,"cssClass":"pl-en"},{"start":11,"end":17,"cssClass":"pl-s1"},{"start":19,"end":24,"cssClass":"pl-s1"},{"start":26,"end":37,"cssClass":"pl-s1"},{"start":39,"end":45,"cssClass":"pl-s1"}],[{"start":1,"end":7,"cssClass":"pl-k"},{"start":9,"end":15,"cssClass":"pl-s1"}],[],[],[{"start":0,"end":3,"cssClass":"pl-c"}],[{"start":0,"end":59,"cssClass":"pl-c"}],[{"start":0,"end":18,"cssClass":"pl-c"}],[{"start":0,"end":29,"cssClass":"pl-c"}],[{"start":0,"end":67,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":41,"cssClass":"pl-c"}],[{"start":0,"end":15,"cssClass":"pl-c"}],[{"start":0,"end":3,"cssClass":"pl-c"}],[{"start":0,"end":4,"cssClass":"pl-smi"},{"start":5,"end":14,"cssClass":"pl-en"},{"start":15,"end":19,"cssClass":"pl-smi"},{"start":20,"end":21,"cssClass":"pl-c1"},{"start":21,"end":27,"cssClass":"pl-s1"},{"start":29,"end":33,"cssClass":"pl-smi"},{"start":34,"end":35,"cssClass":"pl-c1"},{"start":35,"end":40,"cssClass":"pl-s1"},{"start":42,"end":45,"cssClass":"pl-smi"},{"start":46,"end":48,"cssClass":"pl-s1"},{"start":50,"end":53,"cssClass":"pl-smi"},{"start":54,"end":60,"cssClass":"pl-s1"}],[],[{"start":1,"end":4,"cssClass":"pl-smi"},{"start":5,"end":6,"cssClass":"pl-s1"}],[{"start":1,"end":4,"cssClass":"pl-smi"},{"start":5,"end":9,"cssClass":"pl-s1"}],[],[{"start":1,"end":14,"cssClass":"pl-smi"},{"start":15,"end":24,"cssClass":"pl-s1"},{"start":27,"end":28,"cssClass":"pl-c1"}],[{"start":3,"end":9,"cssClass":"pl-s"},{"start":11,"end":23,"cssClass":"pl-s1"}],[{"start":3,"end":9,"cssClass":"pl-s"},{"start":11,"end":22,"cssClass":"pl-s1"}],[{"start":3,"end":9,"cssClass":"pl-s"},{"start":11,"end":20,"cssClass":"pl-s1"}],[{"start":3,"end":8,"cssClass":"pl-s"},{"start":10,"end":17,"cssClass":"pl-s1"}],[{"start":3,"end":8,"cssClass":"pl-s"},{"start":10,"end":13,"cssClass":"pl-s1"}],[{"start":3,"end":9,"cssClass":"pl-s"},{"start":11,"end":21,"cssClass":"pl-s1"}],[{"start":3,"end":8,"cssClass":"pl-s"},{"start":10,"end":19,"cssClass":"pl-s1"}],[{"start":3,"end":8,"cssClass":"pl-s"},{"start":10,"end":19,"cssClass":"pl-s1"}],[{"start":3,"end":8,"cssClass":"pl-s"},{"start":10,"end":19,"cssClass":"pl-s1"}],[{"start":3,"end":8,"cssClass":"pl-s"},{"start":10,"end":19,"cssClass":"pl-s1"}],[{"start":3,"end":8,"cssClass":"pl-s"},{"start":10,"end":19,"cssClass":"pl-s1"}],[{"start":3,"end":10,"cssClass":"pl-s"},{"start":12,"end":22,"cssClass":"pl-s1"}],[{"start":3,"end":9,"cssClass":"pl-s"},{"start":11,"end":20,"cssClass":"pl-s1"}],[{"start":3,"end":9,"cssClass":"pl-s"},{"start":11,"end":15,"cssClass":"pl-s1"}],[{"start":3,"end":9,"cssClass":"pl-s"},{"start":11,"end":15,"cssClass":"pl-s1"}],[{"start":3,"end":7,"cssClass":"pl-c1"},{"start":9,"end":13,"cssClass":"pl-c1"}],[],[],[{"start":1,"end":3,"cssClass":"pl-k"},{"start":5,"end":11,"cssClass":"pl-s1"},{"start":12,"end":13,"cssClass":"pl-c1"},{"start":15,"end":17,"cssClass":"pl-c1"},{"start":18,"end":21,"cssClass":"pl-c1"}],[{"start":2,"end":8,"cssClass":"pl-k"}],[],[{"start":1,"end":4,"cssClass":"pl-k"},{"start":6,"end":10,"cssClass":"pl-s1"},{"start":11,"end":12,"cssClass":"pl-c1"},{"start":13,"end":14,"cssClass":"pl-c1"},{"start":16,"end":17,"cssClass":"pl-s1"},{"start":18,"end":19,"cssClass":"pl-c1"},{"start":20,"end":21,"cssClass":"pl-c1"},{"start":23,"end":32,"cssClass":"pl-s1"},{"start":33,"end":34,"cssClass":"pl-s1"},{"start":36,"end":42,"cssClass":"pl-c1"},{"start":43,"end":45,"cssClass":"pl-c1"},{"start":46,"end":50,"cssClass":"pl-c1"},{"start":52,"end":53,"cssClass":"pl-s1"},{"start":53,"end":55,"cssClass":"pl-c1"}],[],[{"start":2,"end":4,"cssClass":"pl-k"},{"start":6,"end":12,"cssClass":"pl-en"},{"start":13,"end":19,"cssClass":"pl-s1"},{"start":21,"end":30,"cssClass":"pl-s1"},{"start":31,"end":32,"cssClass":"pl-s1"},{"start":34,"end":40,"cssClass":"pl-c1"},{"start":42,"end":44,"cssClass":"pl-c1"},{"start":45,"end":46,"cssClass":"pl-c1"}],[],[{"start":3,"end":11,"cssClass":"pl-en"},{"start":12,"end":21,"cssClass":"pl-s1"},{"start":22,"end":23,"cssClass":"pl-s1"},{"start":25,"end":26,"cssClass":"pl-c1"},{"start":28,"end":34,"cssClass":"pl-s1"},{"start":36,"end":41,"cssClass":"pl-s1"},{"start":43,"end":45,"cssClass":"pl-s1"},{"start":47,"end":53,"cssClass":"pl-s1"}],[{"start":3,"end":7,"cssClass":"pl-s1"},{"start":8,"end":9,"cssClass":"pl-c1"},{"start":10,"end":11,"cssClass":"pl-c1"}],[],[],[{"start":1,"end":3,"cssClass":"pl-k"},{"start":5,"end":9,"cssClass":"pl-s1"},{"start":10,"end":12,"cssClass":"pl-c1"},{"start":13,"end":14,"cssClass":"pl-c1"}],[{"start":2,"end":5,"cssClass":"pl-en"},{"start":6,"end":7,"cssClass":"pl-c1"},{"start":9,"end":11,"cssClass":"pl-s1"},{"start":13,"end":19,"cssClass":"pl-s1"}],[],[],[],[{"start":0,"end":3,"cssClass":"pl-c"}],[{"start":0,"end":42,"cssClass":"pl-c"}],[{"start":0,"end":61,"cssClass":"pl-c"}],[{"start":0,"end":39,"cssClass":"pl-c"}],[{"start":0,"end":45,"cssClass":"pl-c"}],[{"start":0,"end":41,"cssClass":"pl-c"}],[{"start":0,"end":68,"cssClass":"pl-c"}],[{"start":0,"end":41,"cssClass":"pl-c"}],[{"start":0,"end":3,"cssClass":"pl-c"}],[{"start":0,"end":4,"cssClass":"pl-smi"},{"start":5,"end":13,"cssClass":"pl-en"},{"start":14,"end":21,"cssClass":"pl-smi"},{"start":22,"end":26,"cssClass":"pl-s1"},{"start":28,"end":32,"cssClass":"pl-smi"},{"start":33,"end":34,"cssClass":"pl-c1"},{"start":34,"end":36,"cssClass":"pl-s1"},{"start":38,"end":42,"cssClass":"pl-smi"},{"start":43,"end":44,"cssClass":"pl-c1"},{"start":44,"end":47,"cssClass":"pl-s1"},{"start":49,"end":52,"cssClass":"pl-smi"},{"start":53,"end":55,"cssClass":"pl-s1"},{"start":57,"end":60,"cssClass":"pl-smi"},{"start":61,"end":67,"cssClass":"pl-s1"}],[],[{"start":1,"end":8,"cssClass":"pl-smi"},{"start":9,"end":10,"cssClass":"pl-c1"},{"start":10,"end":14,"cssClass":"pl-s1"}],[{"start":1,"end":4,"cssClass":"pl-smi"},{"start":5,"end":9,"cssClass":"pl-s1"}],[{"start":1,"end":4,"cssClass":"pl-smi"},{"start":5,"end":6,"cssClass":"pl-s1"}],[],[{"start":1,"end":5,"cssClass":"pl-s1"},{"start":6,"end":7,"cssClass":"pl-c1"},{"start":8,"end":9,"cssClass":"pl-c1"}],[{"start":1,"end":3,"cssClass":"pl-k"},{"start":5,"end":11,"cssClass":"pl-en"},{"start":12,"end":14,"cssClass":"pl-s1"},{"start":16,"end":22,"cssClass":"pl-s"},{"start":24,"end":26,"cssClass":"pl-c1"},{"start":27,"end":28,"cssClass":"pl-c1"}],[],[{"start":2,"end":4,"cssClass":"pl-k"},{"start":6,"end":9,"cssClass":"pl-s1"},{"start":10,"end":12,"cssClass":"pl-c1"},{"start":13,"end":17,"cssClass":"pl-c1"},{"start":18,"end":20,"cssClass":"pl-c1"},{"start":21,"end":24,"cssClass":"pl-s1"},{"start":25,"end":26,"cssClass":"pl-c1"},{"start":28,"end":30,"cssClass":"pl-c1"},{"start":31,"end":34,"cssClass":"pl-c1"}],[],[{"start":3,"end":6,"cssClass":"pl-s1"},{"start":7,"end":8,"cssClass":"pl-c1"},{"start":9,"end":12,"cssClass":"pl-s1"},{"start":13,"end":14,"cssClass":"pl-c1"},{"start":15,"end":16,"cssClass":"pl-c1"}],[{"start":3,"end":7,"cssClass":"pl-s1"},{"start":8,"end":9,"cssClass":"pl-c1"},{"start":10,"end":12,"cssClass":"pl-c1"}],[],[{"start":2,"end":4,"cssClass":"pl-k"},{"start":6,"end":9,"cssClass":"pl-s1"},{"start":10,"end":12,"cssClass":"pl-c1"},{"start":13,"end":17,"cssClass":"pl-c1"}],[{"start":3,"end":6,"cssClass":"pl-en"},{"start":7,"end":8,"cssClass":"pl-c1"},{"start":10,"end":12,"cssClass":"pl-s1"}],[{"start":2,"end":5,"cssClass":"pl-k"},{"start":7,"end":8,"cssClass":"pl-s1"},{"start":9,"end":10,"cssClass":"pl-c1"},{"start":11,"end":12,"cssClass":"pl-c1"},{"start":14,"end":17,"cssClass":"pl-s1"},{"start":18,"end":19,"cssClass":"pl-s1"},{"start":21,"end":23,"cssClass":"pl-c1"},{"start":24,"end":28,"cssClass":"pl-c1"},{"start":30,"end":31,"cssClass":"pl-s1"},{"start":31,"end":33,"cssClass":"pl-c1"}],[],[{"start":3,"end":5,"cssClass":"pl-k"},{"start":7,"end":14,"cssClass":"pl-en"},{"start":15,"end":18,"cssClass":"pl-s1"},{"start":19,"end":20,"cssClass":"pl-s1"},{"start":23,"end":25,"cssClass":"pl-c1"},{"start":26,"end":27,"cssClass":"pl-c1"}],[{"start":4,"end":7,"cssClass":"pl-en"},{"start":8,"end":9,"cssClass":"pl-c1"},{"start":11,"end":13,"cssClass":"pl-s1"}],[],[{"start":2,"end":6,"cssClass":"pl-s1"},{"start":7,"end":8,"cssClass":"pl-c1"},{"start":9,"end":20,"cssClass":"pl-en"},{"start":21,"end":25,"cssClass":"pl-en"},{"start":26,"end":29,"cssClass":"pl-s1"},{"start":31,"end":32,"cssClass":"pl-c1"},{"start":33,"end":37,"cssClass":"pl-s1"}],[{"start":2,"end":4,"cssClass":"pl-k"},{"start":6,"end":12,"cssClass":"pl-s1"},{"start":13,"end":15,"cssClass":"pl-c1"},{"start":16,"end":17,"cssClass":"pl-c1"}],[{"start":3,"end":7,"cssClass":"pl-en"},{"start":8,"end":9,"cssClass":"pl-c1"},{"start":9,"end":13,"cssClass":"pl-s1"},{"start":15,"end":17,"cssClass":"pl-s1"}],[{"start":2,"end":4,"cssClass":"pl-k"},{"start":6,"end":12,"cssClass":"pl-s1"},{"start":13,"end":15,"cssClass":"pl-c1"},{"start":16,"end":17,"cssClass":"pl-c1"}],[{"start":3,"end":15,"cssClass":"pl-en"},{"start":16,"end":17,"cssClass":"pl-c1"},{"start":17,"end":21,"cssClass":"pl-s1"},{"start":23,"end":25,"cssClass":"pl-s1"}],[],[{"start":1,"end":5,"cssClass":"pl-k"}],[{"start":2,"end":6,"cssClass":"pl-en"},{"start":7,"end":8,"cssClass":"pl-c1"},{"start":8,"end":12,"cssClass":"pl-s1"},{"start":14,"end":16,"cssClass":"pl-s1"}],[]],"csv":null,"csvError":null,"dependabotInfo":{"showConfigurationBanner":false,"configFilePath":null,"networkDependabotPath":"/sadatmisr/monty/network/updates","dismissConfigurationNoticePath":"/settings/dismiss-notice/dependabot_configuration_notice","configurationNoticeDismissed":null,"repoAlertsPath":"/sadatmisr/monty/security/dependabot","repoSecurityAndAnalysisPath":"/sadatmisr/monty/settings/security_analysis","repoOwnerIsOrg":false,"currentUserCanAdminRepo":false},"displayName":"file_tools.c","displayUrl":"https://github.com/sadatmisr/monty/blob/main/file_tools.c?raw=true","headerInfo":{"blobSize":"3.11 KB","deleteInfo":{"deleteTooltip":"You must be signed in to make or propose changes"},"editInfo":{"editTooltip":"You must be signed in to make or propose changes"},"ghDesktopPath":"https://desktop.github.com","gitLfsPath":null,"onBranch":true,"shortPath":"8533776","siteNavLoginPath":"/login?return_to=https%3A%2F%2Fgithub.com%2Fsadatmisr%2Fmonty%2Fblob%2Fmain%2Ffile_tools.c","isCSV":false,"isRichtext":false,"toc":null,"lineInfo":{"truncatedLoc":"160","truncatedSloc":"138"},"mode":"file"},"image":false,"isCodeownersFile":null,"isPlain":false,"isValidLegacyIssueTemplate":false,"issueTemplateHelpUrl":"https://docs.github.com/articles/about-issue-and-pull-request-templates","issueTemplate":null,"discussionTemplate":null,"language":"C","languageID":41,"large":false,"loggedIn":false,"newDiscussionPath":"/sadatmisr/monty/discussions/new","newIssuePath":"/sadatmisr/monty/issues/new","planSupportInfo":{"repoIsFork":null,"repoOwnedByCurrentUser":null,"requestFullPath":"/sadatmisr/monty/blob/main/file_tools.c","showFreeOrgGatedFeatureMessage":null,"showPlanSupportBanner":null,"upgradeDataAttributes":null,"upgradePath":null},"publishBannersInfo":{"dismissActionNoticePath":"/settings/dismiss-notice/publish_action_from_dockerfile","dismissStackNoticePath":"/settings/dismiss-notice/publish_stack_from_file","releasePath":"/sadatmisr/monty/releases/new?marketplace=true","showPublishActionBanner":false,"showPublishStackBanner":false},"renderImageOrRaw":false,"richText":null,"renderedFileInfo":null,"shortPath":null,"tabSize":8,"topBannersInfo":{"overridingGlobalFundingFile":false,"globalPreferredFundingPath":null,"repoOwner":"sadatmisr","repoName":"monty","showInvalidCitationWarning":false,"citationHelpUrl":"https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-citation-files","showDependabotConfigurationBanner":false,"actionsOnboardingTip":null},"truncated":false,"viewable":true,"workflowRedirectUrl":null,"symbols":{"timedOut":false,"notAnalyzed":false,"symbols":[{"name":"open_file","kind":"function","identStart":111,"identEnd":120,"extentStart":111,"extentEnd":137,"fullyQualifiedName":"open_file","identUtf16":{"start":{"lineNumber":8,"utf16Col":5},"end":{"lineNumber":8,"utf16Col":14}},"extentUtf16":{"start":{"lineNumber":8,"utf16Col":5},"end":{"lineNumber":8,"utf16Col":31}}},{"name":"read_file","kind":"function","identStart":362,"identEnd":371,"extentStart":362,"extentEnd":381,"fullyQualifiedName":"read_file","identUtf16":{"start":{"lineNumber":26,"utf16Col":5},"end":{"lineNumber":26,"utf16Col":14}},"extentUtf16":{"start":{"lineNumber":26,"utf16Col":5},"end":{"lineNumber":26,"utf16Col":24}}},{"name":"parse_line","kind":"function","identStart":930,"identEnd":940,"extentStart":930,"extentEnd":983,"fullyQualifiedName":"parse_line","identUtf16":{"start":{"lineNumber":50,"utf16Col":4},"end":{"lineNumber":50,"utf16Col":14}},"extentUtf16":{"start":{"lineNumber":50,"utf16Col":4},"end":{"lineNumber":50,"utf16Col":57}}},{"name":"find_func","kind":"function","identStart":1610,"identEnd":1619,"extentStart":1610,"extentEnd":1666,"fullyQualifiedName":"find_func","identUtf16":{"start":{"lineNumber":81,"utf16Col":5},"end":{"lineNumber":81,"utf16Col":14}},"extentUtf16":{"start":{"lineNumber":81,"utf16Col":5},"end":{"lineNumber":81,"utf16Col":61}}},{"name":"call_fun","kind":"function","identStart":2689,"identEnd":2697,"extentStart":2689,"extentEnd":2752,"fullyQualifiedName":"call_fun","identUtf16":{"start":{"lineNumber":130,"utf16Col":5},"end":{"lineNumber":130,"utf16Col":13}},"extentUtf16":{"start":{"lineNumber":130,"utf16Col":5},"end":{"lineNumber":130,"utf16Col":68}}}]}},"copilotInfo":null,"csrf_tokens":{"/sadatmisr/monty/branches":{"post":"283-_sz6X35Xy45A3pY5hIqYek4lEZ_yMyPbweOftc47F7RLI24PM1JW726lim6dRgkOfCgIcqIguPAo9CGGpg"},"/repos/preferences":{"post":"PQjR8Y9nC6hcQNU3UbQGtvzp-jXDJvVCP-MGYWlONhHBagr2HUp9LnJ2AjIOv247WvfOuB_b-O8bB4YbvyQHlw"}}},"title":"monty/file_tools.c at main · sadatmisr/monty"}
+#include "monty.h"
+
+/**
+ * open_file - opens a file
+ * @file_name: the file namepath
+ * Return: void
+ */
+
+void open_file(char *file_name)
+{
+	FILE *fd = fopen(file_name, "r");
+
+	if (file_name == NULL || fd == NULL)
+		err(2, file_name);
+
+	read_file(fd);
+	fclose(fd);
+}
+
+
+/**
+ * read_file - reads a file
+ * @fd: pointer to file descriptor
+ * Return: void
+ */
+
+void read_file(FILE *fd)
+{
+	int line_number, format = 0;
+	char *buffer = NULL;
+	size_t len = 0;
+
+	for (line_number = 1; getline(&buffer, &len, fd) != -1; line_number++)
+	{
+		format = parse_line(buffer, line_number, format);
+	}
+	free(buffer);
+}
+
+
+/**
+ * parse_line - Separates each line into tokens to determine
+ * which function to call
+ * @buffer: line from the file
+ * @line_number: line number
+ * @format:  storage format. If 0 Nodes will be entered as a stack.
+ * if 1 nodes will be entered as a queue.
+ * Return: Returns 0 if the opcode is stack. 1 if queue.
+ */
+
+int parse_line(char *buffer, int line_number, int format)
+{
+	char *opcode, *value;
+	const char *delim = "\n ";
+
+	if (buffer == NULL)
+		err(4);
+
+	opcode = strtok(buffer, delim);
+	if (opcode == NULL)
+		return (format);
+	value = strtok(NULL, delim);
+
+	if (strcmp(opcode, "stack") == 0)
+		return (0);
+	if (strcmp(opcode, "queue") == 0)
+		return (1);
+
+	find_func(opcode, value, line_number, format);
+	return (format);
+}
+
+/**
+ * find_func - find the appropriate function for the opcode
+ * @opcode: opcode
+ * @value: argument of opcode
+ * @format:  storage format. If 0 Nodes will be entered as a stack.
+ * @ln: line number
+ * if 1 nodes will be entered as a queue.
+ * Return: void
+ */
+void find_func(char *opcode, char *value, int ln, int format)
+{
+	int i;
+	int flag;
+
+	instruction_t func_list[] = {
+		{"push", add_to_stack},
+		{"pall", print_stack},
+		{"pint", print_top},
+		{"pop", pop_top},
+		{"nop", nop},
+		{"swap", swap_nodes},
+		{"add", add_nodes},
+		{"sub", sub_nodes},
+		{"div", div_nodes},
+		{"mul", mul_nodes},
+		{"mod", mod_nodes},
+		{"pchar", print_char},
+		{"pstr", print_str},
+		{"rotl", rotl},
+		{"rotr", rotr},
+		{NULL, NULL}
+	};
+
+	if (opcode[0] == '#')
+		return;
+
+	for (flag = 1, i = 0; func_list[i].opcode != NULL; i++)
+	{
+		if (strcmp(opcode, func_list[i].opcode) == 0)
+		{
+			call_fun(func_list[i].f, opcode, value, ln, format);
+			flag = 0;
+		}
+	}
+	if (flag == 1)
+		err(3, ln, opcode);
+}
+
+
+/**
+ * call_fun - Calls the required function.
+ * @func: Pointer to the function that is about to be called.
+ * @op: string representing the opcode.
+ * @val: string representing a numeric value.
+ * @ln: line numeber for the instruction.
+ * @format: Format specifier. If 0 Nodes will be entered as a stack.
+ * if 1 nodes will be entered as a queue.
+ */
+void call_fun(op_func func, char *op, char *val, int ln, int format)
+{
+	stack_t *node;
+	int flag;
+	int i;
+
+	flag = 1;
+	if (strcmp(op, "push") == 0)
+	{
+		if (val != NULL && val[0] == '-')
+		{
+			val = val + 1;
+			flag = -1;
+		}
+		if (val == NULL)
+			err(5, ln);
+		for (i = 0; val[i] != '\0'; i++)
+		{
+			if (isdigit(val[i]) == 0)
+				err(5, ln);
+		}
+		node = create_node(atoi(val) * flag);
+		if (format == 0)
+			func(&node, ln);
+		if (format == 1)
+			add_to_queue(&node, ln);
+	}
+	else
+		func(&head, ln);
+}

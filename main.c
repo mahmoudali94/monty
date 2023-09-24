@@ -1,1 +1,83 @@
-{"payload":{"allShortcutsEnabled":false,"fileTree":{"":{"items":[{"name":"bf","path":"bf","contentType":"directory"},{"name":"errors.c","path":"errors.c","contentType":"file"},{"name":"file_tools.c","path":"file_tools.c","contentType":"file"},{"name":"main.c","path":"main.c","contentType":"file"},{"name":"monty.h","path":"monty.h","contentType":"file"},{"name":"stack_func1.c","path":"stack_func1.c","contentType":"file"},{"name":"stack_func2.c","path":"stack_func2.c","contentType":"file"},{"name":"stack_op.c","path":"stack_op.c","contentType":"file"},{"name":"stack_strings.c","path":"stack_strings.c","contentType":"file"}],"totalCount":9}},"fileTreeProcessingTime":1.890615,"foldersToFetch":[],"reducedMotionEnabled":null,"repo":{"id":682627323,"defaultBranch":"main","name":"monty","ownerLogin":"sadatmisr","currentUserCanPush":false,"isFork":false,"isEmpty":false,"createdAt":"2023-08-24T15:17:33.000Z","ownerAvatar":"https://avatars.githubusercontent.com/u/130691074?v=4","public":true,"private":false,"isOrgOwned":false},"symbolsExpanded":false,"treeExpanded":true,"refInfo":{"name":"main","listCacheKey":"v0:1692890361.0","canEdit":false,"refType":"branch","currentOid":"b5394114697cb430a376e809eb1589246a6ace63"},"path":"main.c","currentUser":null,"blob":{"rawLines":["#include \"monty.h\"","stack_t *head = NULL;","","/**"," * main - entry point"," * @argc: arguments count"," * @argv: list of arguments"," * Return: always 0"," */","","int main(int argc, char *argv[])","{","\tif (argc != 2)","\t{","\t\tfprintf(stderr, \"USAGE: monty file\\n\");","\t\texit(EXIT_FAILURE);","\t}","\topen_file(argv[1]);","\tfree_nodes();","\treturn (0);","}","","/**"," * create_node - Creates a node."," * @n: Number to go inside the node."," * Return: Upon sucess a pointer to the node. Otherwise NULL."," */","stack_t *create_node(int n)","{","\tstack_t *node;","","\tnode = malloc(sizeof(stack_t));","\tif (node == NULL)","\t\terr(4);","\tnode->next = NULL;","\tnode->prev = NULL;","\tnode->n = n;","\treturn (node);","}","","/**"," * free_nodes - Frees nodes in the stack."," */","void free_nodes(void)","{","\tstack_t *tmp;","","\tif (head == NULL)","\t\treturn;","","\twhile (head != NULL)","\t{","\t\ttmp = head;","\t\thead = head->next;","\t\tfree(tmp);","\t}","}","","","/**"," * add_to_queue - Adds a node to the queue."," * @new_node: Pointer to the new node."," * @ln: line number of the opcode."," */","void add_to_queue(stack_t **new_node, __attribute__((unused))unsigned int ln)","{","\tstack_t *tmp;","","\tif (new_node == NULL || *new_node == NULL)","\t\texit(EXIT_FAILURE);","\tif (head == NULL)","\t{","\t\thead = *new_node;","\t\treturn;","\t}","\ttmp = head;","\twhile (tmp->next != NULL)","\t\ttmp = tmp->next;","","\ttmp->next = *new_node;","\t(*new_node)->prev = tmp;","","}"],"stylingDirectives":[[{"start":0,"end":8,"cssClass":"pl-k"},{"start":9,"end":18,"cssClass":"pl-s"}],[{"start":0,"end":7,"cssClass":"pl-smi"},{"start":8,"end":9,"cssClass":"pl-c1"},{"start":9,"end":13,"cssClass":"pl-s1"},{"start":14,"end":15,"cssClass":"pl-c1"},{"start":16,"end":20,"cssClass":"pl-c1"}],[],[{"start":0,"end":3,"cssClass":"pl-c"}],[{"start":0,"end":21,"cssClass":"pl-c"}],[{"start":0,"end":25,"cssClass":"pl-c"}],[{"start":0,"end":27,"cssClass":"pl-c"}],[{"start":0,"end":19,"cssClass":"pl-c"}],[{"start":0,"end":3,"cssClass":"pl-c"}],[],[{"start":0,"end":3,"cssClass":"pl-smi"},{"start":4,"end":8,"cssClass":"pl-en"},{"start":9,"end":12,"cssClass":"pl-smi"},{"start":13,"end":17,"cssClass":"pl-s1"},{"start":19,"end":23,"cssClass":"pl-smi"},{"start":24,"end":25,"cssClass":"pl-c1"},{"start":25,"end":29,"cssClass":"pl-s1"}],[],[{"start":1,"end":3,"cssClass":"pl-k"},{"start":5,"end":9,"cssClass":"pl-s1"},{"start":10,"end":12,"cssClass":"pl-c1"},{"start":13,"end":14,"cssClass":"pl-c1"}],[],[{"start":2,"end":9,"cssClass":"pl-en"},{"start":10,"end":16,"cssClass":"pl-s1"},{"start":18,"end":39,"cssClass":"pl-s"}],[{"start":2,"end":6,"cssClass":"pl-en"},{"start":7,"end":19,"cssClass":"pl-c1"}],[],[{"start":1,"end":10,"cssClass":"pl-en"},{"start":11,"end":15,"cssClass":"pl-s1"},{"start":16,"end":17,"cssClass":"pl-c1"}],[{"start":1,"end":11,"cssClass":"pl-en"}],[{"start":1,"end":7,"cssClass":"pl-k"},{"start":9,"end":10,"cssClass":"pl-c1"}],[],[],[{"start":0,"end":3,"cssClass":"pl-c"}],[{"start":0,"end":32,"cssClass":"pl-c"}],[{"start":0,"end":36,"cssClass":"pl-c"}],[{"start":0,"end":61,"cssClass":"pl-c"}],[{"start":0,"end":3,"cssClass":"pl-c"}],[{"start":0,"end":7,"cssClass":"pl-smi"},{"start":8,"end":9,"cssClass":"pl-c1"},{"start":9,"end":20,"cssClass":"pl-en"},{"start":21,"end":24,"cssClass":"pl-smi"},{"start":25,"end":26,"cssClass":"pl-s1"}],[],[{"start":1,"end":8,"cssClass":"pl-smi"},{"start":9,"end":10,"cssClass":"pl-c1"},{"start":10,"end":14,"cssClass":"pl-s1"}],[],[{"start":1,"end":5,"cssClass":"pl-s1"},{"start":6,"end":7,"cssClass":"pl-c1"},{"start":8,"end":14,"cssClass":"pl-en"},{"start":15,"end":21,"cssClass":"pl-k"},{"start":22,"end":29,"cssClass":"pl-s1"}],[{"start":1,"end":3,"cssClass":"pl-k"},{"start":5,"end":9,"cssClass":"pl-s1"},{"start":10,"end":12,"cssClass":"pl-c1"},{"start":13,"end":17,"cssClass":"pl-c1"}],[{"start":2,"end":5,"cssClass":"pl-en"},{"start":6,"end":7,"cssClass":"pl-c1"}],[{"start":1,"end":5,"cssClass":"pl-s1"},{"start":5,"end":7,"cssClass":"pl-c1"},{"start":7,"end":11,"cssClass":"pl-c1"},{"start":12,"end":13,"cssClass":"pl-c1"},{"start":14,"end":18,"cssClass":"pl-c1"}],[{"start":1,"end":5,"cssClass":"pl-s1"},{"start":5,"end":7,"cssClass":"pl-c1"},{"start":7,"end":11,"cssClass":"pl-c1"},{"start":12,"end":13,"cssClass":"pl-c1"},{"start":14,"end":18,"cssClass":"pl-c1"}],[{"start":1,"end":5,"cssClass":"pl-s1"},{"start":5,"end":7,"cssClass":"pl-c1"},{"start":7,"end":8,"cssClass":"pl-c1"},{"start":9,"end":10,"cssClass":"pl-c1"},{"start":11,"end":12,"cssClass":"pl-s1"}],[{"start":1,"end":7,"cssClass":"pl-k"},{"start":9,"end":13,"cssClass":"pl-s1"}],[],[],[{"start":0,"end":3,"cssClass":"pl-c"}],[{"start":0,"end":41,"cssClass":"pl-c"}],[{"start":0,"end":3,"cssClass":"pl-c"}],[{"start":0,"end":4,"cssClass":"pl-smi"},{"start":5,"end":15,"cssClass":"pl-en"},{"start":16,"end":20,"cssClass":"pl-smi"}],[],[{"start":1,"end":8,"cssClass":"pl-smi"},{"start":9,"end":10,"cssClass":"pl-c1"},{"start":10,"end":13,"cssClass":"pl-s1"}],[],[{"start":1,"end":3,"cssClass":"pl-k"},{"start":5,"end":9,"cssClass":"pl-s1"},{"start":10,"end":12,"cssClass":"pl-c1"},{"start":13,"end":17,"cssClass":"pl-c1"}],[{"start":2,"end":8,"cssClass":"pl-k"}],[],[{"start":1,"end":6,"cssClass":"pl-k"},{"start":8,"end":12,"cssClass":"pl-s1"},{"start":13,"end":15,"cssClass":"pl-c1"},{"start":16,"end":20,"cssClass":"pl-c1"}],[],[{"start":2,"end":5,"cssClass":"pl-s1"},{"start":6,"end":7,"cssClass":"pl-c1"},{"start":8,"end":12,"cssClass":"pl-s1"}],[{"start":2,"end":6,"cssClass":"pl-s1"},{"start":7,"end":8,"cssClass":"pl-c1"},{"start":9,"end":13,"cssClass":"pl-s1"},{"start":13,"end":15,"cssClass":"pl-c1"},{"start":15,"end":19,"cssClass":"pl-c1"}],[{"start":2,"end":6,"cssClass":"pl-en"},{"start":7,"end":10,"cssClass":"pl-s1"}],[],[],[],[],[{"start":0,"end":3,"cssClass":"pl-c"}],[{"start":0,"end":43,"cssClass":"pl-c"}],[{"start":0,"end":38,"cssClass":"pl-c"}],[{"start":0,"end":34,"cssClass":"pl-c"}],[{"start":0,"end":3,"cssClass":"pl-c"}],[{"start":0,"end":4,"cssClass":"pl-smi"},{"start":5,"end":17,"cssClass":"pl-en"},{"start":18,"end":25,"cssClass":"pl-smi"},{"start":26,"end":27,"cssClass":"pl-c1"},{"start":27,"end":28,"cssClass":"pl-c1"},{"start":28,"end":36,"cssClass":"pl-s1"},{"start":53,"end":59,"cssClass":"pl-s1"},{"start":61,"end":73,"cssClass":"pl-smi"},{"start":70,"end":73,"cssClass":"pl-smi"},{"start":74,"end":76,"cssClass":"pl-s1"}],[],[{"start":1,"end":8,"cssClass":"pl-smi"},{"start":9,"end":10,"cssClass":"pl-c1"},{"start":10,"end":13,"cssClass":"pl-s1"}],[],[{"start":1,"end":3,"cssClass":"pl-k"},{"start":5,"end":13,"cssClass":"pl-s1"},{"start":14,"end":16,"cssClass":"pl-c1"},{"start":17,"end":21,"cssClass":"pl-c1"},{"start":22,"end":24,"cssClass":"pl-c1"},{"start":25,"end":26,"cssClass":"pl-c1"},{"start":26,"end":34,"cssClass":"pl-s1"},{"start":35,"end":37,"cssClass":"pl-c1"},{"start":38,"end":42,"cssClass":"pl-c1"}],[{"start":2,"end":6,"cssClass":"pl-en"},{"start":7,"end":19,"cssClass":"pl-c1"}],[{"start":1,"end":3,"cssClass":"pl-k"},{"start":5,"end":9,"cssClass":"pl-s1"},{"start":10,"end":12,"cssClass":"pl-c1"},{"start":13,"end":17,"cssClass":"pl-c1"}],[],[{"start":2,"end":6,"cssClass":"pl-s1"},{"start":7,"end":8,"cssClass":"pl-c1"},{"start":9,"end":10,"cssClass":"pl-c1"},{"start":10,"end":18,"cssClass":"pl-s1"}],[{"start":2,"end":8,"cssClass":"pl-k"}],[],[{"start":1,"end":4,"cssClass":"pl-s1"},{"start":5,"end":6,"cssClass":"pl-c1"},{"start":7,"end":11,"cssClass":"pl-s1"}],[{"start":1,"end":6,"cssClass":"pl-k"},{"start":8,"end":11,"cssClass":"pl-s1"},{"start":11,"end":13,"cssClass":"pl-c1"},{"start":13,"end":17,"cssClass":"pl-c1"},{"start":18,"end":20,"cssClass":"pl-c1"},{"start":21,"end":25,"cssClass":"pl-c1"}],[{"start":2,"end":5,"cssClass":"pl-s1"},{"start":6,"end":7,"cssClass":"pl-c1"},{"start":8,"end":11,"cssClass":"pl-s1"},{"start":11,"end":13,"cssClass":"pl-c1"},{"start":13,"end":17,"cssClass":"pl-c1"}],[],[{"start":1,"end":4,"cssClass":"pl-s1"},{"start":4,"end":6,"cssClass":"pl-c1"},{"start":6,"end":10,"cssClass":"pl-c1"},{"start":11,"end":12,"cssClass":"pl-c1"},{"start":13,"end":14,"cssClass":"pl-c1"},{"start":14,"end":22,"cssClass":"pl-s1"}],[{"start":2,"end":3,"cssClass":"pl-c1"},{"start":3,"end":11,"cssClass":"pl-s1"},{"start":12,"end":14,"cssClass":"pl-c1"},{"start":14,"end":18,"cssClass":"pl-c1"},{"start":19,"end":20,"cssClass":"pl-c1"},{"start":21,"end":24,"cssClass":"pl-s1"}],[],[]],"csv":null,"csvError":null,"dependabotInfo":{"showConfigurationBanner":false,"configFilePath":null,"networkDependabotPath":"/sadatmisr/monty/network/updates","dismissConfigurationNoticePath":"/settings/dismiss-notice/dependabot_configuration_notice","configurationNoticeDismissed":null,"repoAlertsPath":"/sadatmisr/monty/security/dependabot","repoSecurityAndAnalysisPath":"/sadatmisr/monty/settings/security_analysis","repoOwnerIsOrg":false,"currentUserCanAdminRepo":false},"displayName":"main.c","displayUrl":"https://github.com/sadatmisr/monty/blob/main/main.c?raw=true","headerInfo":{"blobSize":"1.27 KB","deleteInfo":{"deleteTooltip":"You must be signed in to make or propose changes"},"editInfo":{"editTooltip":"You must be signed in to make or propose changes"},"ghDesktopPath":"https://desktop.github.com","gitLfsPath":null,"onBranch":true,"shortPath":"97ec50f","siteNavLoginPath":"/login?return_to=https%3A%2F%2Fgithub.com%2Fsadatmisr%2Fmonty%2Fblob%2Fmain%2Fmain.c","isCSV":false,"isRichtext":false,"toc":null,"lineInfo":{"truncatedLoc":"83","truncatedSloc":"71"},"mode":"file"},"image":false,"isCodeownersFile":null,"isPlain":false,"isValidLegacyIssueTemplate":false,"issueTemplateHelpUrl":"https://docs.github.com/articles/about-issue-and-pull-request-templates","issueTemplate":null,"discussionTemplate":null,"language":"C","languageID":41,"large":false,"loggedIn":false,"newDiscussionPath":"/sadatmisr/monty/discussions/new","newIssuePath":"/sadatmisr/monty/issues/new","planSupportInfo":{"repoIsFork":null,"repoOwnedByCurrentUser":null,"requestFullPath":"/sadatmisr/monty/blob/main/main.c","showFreeOrgGatedFeatureMessage":null,"showPlanSupportBanner":null,"upgradeDataAttributes":null,"upgradePath":null},"publishBannersInfo":{"dismissActionNoticePath":"/settings/dismiss-notice/publish_action_from_dockerfile","dismissStackNoticePath":"/settings/dismiss-notice/publish_stack_from_file","releasePath":"/sadatmisr/monty/releases/new?marketplace=true","showPublishActionBanner":false,"showPublishStackBanner":false},"renderImageOrRaw":false,"richText":null,"renderedFileInfo":null,"shortPath":null,"tabSize":8,"topBannersInfo":{"overridingGlobalFundingFile":false,"globalPreferredFundingPath":null,"repoOwner":"sadatmisr","repoName":"monty","showInvalidCitationWarning":false,"citationHelpUrl":"https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-citation-files","showDependabotConfigurationBanner":false,"actionsOnboardingTip":null},"truncated":false,"viewable":true,"workflowRedirectUrl":null,"symbols":{"timedOut":false,"notAnalyzed":false,"symbols":[{"name":"main","kind":"function","identStart":151,"identEnd":155,"extentStart":151,"extentEnd":179,"fullyQualifiedName":"main","identUtf16":{"start":{"lineNumber":10,"utf16Col":4},"end":{"lineNumber":10,"utf16Col":8}},"extentUtf16":{"start":{"lineNumber":10,"utf16Col":4},"end":{"lineNumber":10,"utf16Col":32}}},{"name":"create_node","kind":"function","identStart":469,"identEnd":480,"extentStart":469,"extentEnd":487,"fullyQualifiedName":"create_node","identUtf16":{"start":{"lineNumber":27,"utf16Col":9},"end":{"lineNumber":27,"utf16Col":20}},"extentUtf16":{"start":{"lineNumber":27,"utf16Col":9},"end":{"lineNumber":27,"utf16Col":27}}},{"name":"free_nodes","kind":"function","identStart":697,"identEnd":707,"extentStart":697,"extentEnd":713,"fullyQualifiedName":"free_nodes","identUtf16":{"start":{"lineNumber":43,"utf16Col":5},"end":{"lineNumber":43,"utf16Col":15}},"extentUtf16":{"start":{"lineNumber":43,"utf16Col":5},"end":{"lineNumber":43,"utf16Col":21}}},{"name":"add_to_queue","kind":"function","identStart":973,"identEnd":985,"extentStart":973,"extentEnd":1045,"fullyQualifiedName":"add_to_queue","identUtf16":{"start":{"lineNumber":64,"utf16Col":5},"end":{"lineNumber":64,"utf16Col":17}},"extentUtf16":{"start":{"lineNumber":64,"utf16Col":5},"end":{"lineNumber":64,"utf16Col":77}}}]}},"copilotInfo":null,"csrf_tokens":{"/sadatmisr/monty/branches":{"post":"15ix8Tqei79pvVY0Upgkc1Lvi_RYaahi-DMfKNBzxLA9bAs0DGI2EZJfFkiw3w1zqdUxj9cb8KCcVtnIDRGSow"},"/repos/preferences":{"post":"EC__1JqkQyWZpaBPYUVO7kLkuTSxRaoRkKNhyvYj73vM9o_nssIFQqWsf-CILu8_tRdlInwU5mYDp6beGORY1Q"}}},"title":"monty/main.c at main · sadatmisr/monty"}
+#include "monty.h"
+stack_t *head = NULL;
+
+/**
+ * main - entry point
+ * @argc: arguments count
+ * @argv: list of arguments
+ * Return: always 0
+ */
+
+int main(int argc, char *argv[])
+{
+	if (argc != 2)
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
+	open_file(argv[1]);
+	free_nodes();
+	return (0);
+}
+
+/**
+ * create_node - Creates a node.
+ * @n: Number to go inside the node.
+ * Return: Upon sucess a pointer to the node. Otherwise NULL.
+ */
+stack_t *create_node(int n)
+{
+	stack_t *node;
+
+	node = malloc(sizeof(stack_t));
+	if (node == NULL)
+		err(4);
+	node->next = NULL;
+	node->prev = NULL;
+	node->n = n;
+	return (node);
+}
+
+/**
+ * free_nodes - Frees nodes in the stack.
+ */
+void free_nodes(void)
+{
+	stack_t *tmp;
+
+	if (head == NULL)
+		return;
+
+	while (head != NULL)
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp);
+	}
+}
+
+
+/**
+ * add_to_queue - Adds a node to the queue.
+ * @new_node: Pointer to the new node.
+ * @ln: line number of the opcode.
+ */
+void add_to_queue(stack_t **new_node, __attribute__((unused))unsigned int ln)
+{
+	stack_t *tmp;
+
+	if (new_node == NULL || *new_node == NULL)
+		exit(EXIT_FAILURE);
+	if (head == NULL)
+	{
+		head = *new_node;
+		return;
+	}
+	tmp = head;
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+
+	tmp->next = *new_node;
+	(*new_node)->prev = tmp;
+
+}
